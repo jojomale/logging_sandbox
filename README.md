@@ -3,6 +3,43 @@
 This project was an exercise for a real project for which I wanted to
 introduce logging.
 
+# How to use
+Install package using `pip`. Use editable mode (`-e` flag) if you want to 
+play around. From package directory, do:
+    ```
+    pip install -e .
+    ```
+
+## Software prerequisites
+- python >= 3.9 (lower versions might work)
+- mpi4py
+
+
+Then  execute `scripts/run.py`. 
+Without parallelization:
+    ```
+    python scripts/run.py
+    ```
+With parallelization:
+    ```
+    mpirun -n 2 python scripts/run.py
+    ```
+`-n` sets the number of cores to use. Using `-n 1` basically 
+deactivates parallelization.
+When executed, a subdirectory `output/log` should be created,
+including N log-files, N corresponding to the number of cores
+you chose.
+
+The `run.py`-script mimics the user access to the package.
+Play around with the `loglevel`, to see its influence.
+
+You can, of course, also change things in the package itself
+(everything in `src`) and watch the changes when running the 
+script.
+
+
+
+# Logging set up
 ## Logging requirements
 I had several requirements for the logging:
 - log messages, i.e. loggers should know and express from where they are
@@ -50,33 +87,3 @@ and focusing on the logging.
 		- However then the parent logger of `self.logger` becomes `parent.submod11` instead of `parent` like I intended.
 		- It can be solved using e.g. `self.logger = logging.getLogger(module_logger.name+"..Correlator")`
 		- **WHYYYYYYY!?!?!?!?!?!?**
-
-# How to use
-Install package using `pip`. Use editable mode (`-e` flag) if you want to 
-play around. From package directory, do:
-    ```
-    pip install -e .
-    ```
-
-Then  execute `scripts/run.py`. 
-Without parallelization:
-    ```
-    python scripts/run.py
-    ```
-With parallelization:
-    ```
-    mpirun -n 2 python scripts/run.py
-    ```
-`-n` sets the number of cores to use. Using `-n 1` basically 
-deactivates parallelization.
-When executed, a subdirectory `output/log` should be created,
-including N log-files, N corresponding to the number of cores
-you chose.
-
-The `run.py`-script mimics the user access to the package.
-Play around with the `loglevel`, to see its influence.
-
-You can, of course, also change things in the package itself
-(everything in `src`) and watch the changes when running the 
-script.
-
