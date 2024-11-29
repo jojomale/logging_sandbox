@@ -59,7 +59,7 @@ requires-python = ">=3.9"
 # This is either text indicating the license for the distribution, or a file
 # that contains the license.
 # https://packaging.python.org/en/latest/specifications/core-metadata/#license
-license = { file = "LICENSE.txt" }
+license = { file = "LICENCE" }
 
 # This field adds keywords for your project which will appear on the
 # project page. What does your project relate to?
@@ -111,8 +111,8 @@ dependencies = ["mpi4py"]
 
 # The following would provide a command line executable called `sample`
 # which executes the function `main` from this package when invoked.
-[project.scripts]
-sample = "sample:main"
+# [project.scripts]
+# sample = "sample:main"
 
 
 # This is configuration specific to the `setuptools` build backend.
