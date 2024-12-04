@@ -10,6 +10,10 @@ play around. From package directory, do:
     pip install -e .
     ```
 
+If you want to use the functionality in your own package,
+you can import the `logfactory` module or recreate and 
+customize it in your own package. 
+
 ## Software prerequisites
 - python >= 3.9 (lower versions might work)
 - mpi4py
@@ -69,21 +73,26 @@ and focusing on the logging.
 - have a module `logfactory`
 	- -> function to create basic logger
 	- provide fmt for handlers
+  - provide a base class which has a logger as attribute and
+  default handlers
 - in each module, initiate a `module_logger` using 
 	```
 	logger = logfactory.create_logger()
 	module_logger = logging.getLogger(logger.name+".submod11")
 	```
-- in (main) classes like the `Corelator` we can add a child of the module-logger as attribute
-	- if we want to control the loglevel of all loggers from the parameters given to the class, we need to set loglevels, handlers, etc. to the parent logger, e.g.:
-	```
-	self.logger = logging.getLogger(module_logger.name+"..Correlator")
-	self.logger.parent.setLevel(loglvl)
-	```
-	- for some reason, if set as attribute, the correct parent logger is not found if you use the intuitive naming pattern 
-		- Suppose `module_logger = logging.getLogger(parentlogger.name+".submod11")` 
-		- thus `module_logger.name` is `parent.submod11`
-		- Intuitively I wanted to use `self.logger = logging.getLogger(module_logger.name+".Correlator")` in the class init
-		- However then the parent logger of `self.logger` becomes `parent.submod11` instead of `parent` like I intended.
-		- It can be solved using e.g. `self.logger = logging.getLogger(module_logger.name+"..Correlator")`
-		- **WHYYYYYYY!?!?!?!?!?!?**
+- in (main) classes like the `SampleClass` we can inherit the 
+  logging-base class
+- the logger gets its name from the package, the module, and the 
+class name
+- if we want to control the loglevel of all loggers from the parameters given to the class, we need to set loglevels, handlers, etc. to the parent logger, e.g.:
+```
+self.logger = logging.getLogger(module_logger.name+"..SampleClass")
+self.logger.parent.setLevel(loglvl)
+```
+- for some reason, if set as attribute, the correct parent logger is not found if you use the intuitive naming pattern 
+  - Suppose `module_logger = logging.getLogger(parentlogger.name+".submod11")` 
+  - thus `module_logger.name` is `parent.submod11`
+  - Intuitively I wanted to use `self.logger = logging.getLogger(module_logger.name+".SampleClass")` in the class init
+  - However then the parent logger of `self.logger` becomes `parent.submod11` instead of `parent` like I intended.
+  - It can be solved using e.g. `self.logger = logging.getLogger(module_logger.name+"..SampleClass")`
+  - **WHYYYYYYY!?!?!?!?!?!?**
